@@ -1,0 +1,211 @@
+This File contains all the commands for creating a well-defined professional layout of this project. 
+Kindly use the below given codes for making project layout as of mine.
+
+@echo off
+title RSA Digital Signature Project
+color 0A
+
+:menu
+cls
+echo ==========================================================
+echo        RSA DIGITAL SIGNATURE USING SHA-256
+echo ==========================================================
+echo.
+echo  [1] Generate RSA Private Key
+echo  [2] Generate RSA Public Key
+echo  [3] Create/Edit Message File
+echo  [4] View Message
+echo  [5] Generate SHA-256 Hash
+echo  [6] View SHA-256 Hash
+echo  [7] Create Digital Signature
+echo  [8] Verify Digital Signature
+echo  [9] Modify Message (Tamper Test)
+echo [10] Verify After Modification
+echo [11] Display Public Key
+echo [12] Delete All Files
+echo [13] Exit
+echo.
+echo ==========================================================
+set /p choice=Enter Your Choice:
+
+if %choice%==1 goto privatekey
+if %choice%==2 goto publickey
+if %choice%==3 goto createmsg
+if %choice%==4 goto viewmsg
+if %choice%==5 goto hash
+if %choice%==6 goto viewhash
+if %choice%==7 goto sign
+if %choice%==8 goto verify
+if %choice%==9 goto modify
+if %choice%==10 goto verifyagain
+if %choice%==11 goto viewpublic
+if %choice%==12 goto delete
+if %choice%==13 exit
+
+echo Invalid Choice!
+pause
+goto menu
+
+
+
+:privatekey
+cls
+echo ==========================================
+echo      GENERATING RSA PRIVATE KEY
+echo ==========================================
+openssl genrsa -out private_key.pem 2048
+echo.
+echo Private Key Generated Successfully.
+pause
+goto menu
+
+
+:publickey
+cls
+echo ==========================================
+echo      GENERATING RSA PUBLIC KEY
+echo ==========================================
+openssl rsa -in private_key.pem -pubout -out public_key.pem
+echo.
+echo Public Key Generated Successfully.
+pause
+goto menu
+
+
+:createmsg
+cls
+echo ==========================================
+echo        CREATE / EDIT MESSAGE FILE
+echo ==========================================
+set /p msg=Enter your message:
+echo %msg%>message.txt
+echo.
+echo Message saved successfully in message.txt
+pause
+goto menu
+
+
+:viewmsg
+cls
+echo ==========================================
+echo            DISPLAY MESSAGE
+echo ==========================================
+type message.txt
+echo.
+pause
+goto menu
+
+
+
+:hash
+cls
+echo ==========================================
+echo        GENERATING SHA-256 HASH
+echo ==========================================
+openssl dgst -sha256 -binary -out message.hash message.txt
+echo.
+echo Hash Generated Successfully.
+pause
+goto menu
+
+
+:viewhash
+cls
+echo ==========================================
+echo         DISPLAY SHA-256 HASH
+echo ==========================================
+openssl dgst -sha256 message.txt
+echo.
+pause
+goto menu
+
+
+:sign
+cls
+echo ==========================================
+echo     CREATING DIGITAL SIGNATURE
+echo ==========================================
+openssl pkeyutl -sign -inkey private_key.pem -in message.hash -out signature.bin
+echo.
+echo Digital Signature Created Successfully.
+pause
+goto menu
+
+
+
+
+
+:verify
+cls
+echo ==========================================
+echo     VERIFYING DIGITAL SIGNATURE
+echo ==========================================
+openssl pkeyutl -verify -pubin -inkey public_key.pem -sigfile signature.bin -in message.hash
+echo.
+echo Verification Process Completed.
+pause
+goto menu
+
+
+:modify
+cls
+echo ==========================================
+echo        TAMPER MESSAGE (TEST)
+echo ==========================================
+set /p newmsg=Enter modified message:
+echo %newmsg%>message.txt
+echo.
+echo Message Modified Successfully.
+echo NOTE: Now hash will change and verification will fail.
+pause
+goto menu
+
+
+:verifyagain
+cls
+echo ==========================================
+echo   VERIFY AFTER MESSAGE MODIFICATION
+echo ==========================================
+openssl dgst -sha256 -binary -out message.hash message.txt
+openssl pkeyutl -verify -pubin -inkey public_key.pem -sigfile signature.bin -in message.hash
+echo.
+echo Verification Completed (After Modification).
+pause
+goto menu
+
+
+:viewpublic
+cls
+echo ==========================================
+echo         DISPLAY PUBLIC KEY
+echo ==========================================
+type public_key.pem
+echo.
+pause
+goto menu
+
+
+:delete
+cls
+echo ==========================================
+echo         DELETING ALL FILES
+echo ==========================================
+del private_key.pem
+del public_key.pem
+del message.txt
+del message.hash
+del signature.bin
+echo.
+echo All Generated Files Deleted Successfully.
+pause
+goto menu
+
+
+:exit
+cls
+echo ==========================================
+echo      EXITING PROJECT...
+echo ==========================================
+echo Thank you for using RSA Digital Signature System
+pause
+exit
