@@ -1,0 +1,32 @@
+RSA_Digital_Signature_Project/
+│
+├── README.md
+├── requirements.txt
+│
+├── keys/
+│   ├── private_key.pem
+│   └── public_key.pem
+│
+├── input/
+│   └── message.txt
+│
+├── hashes/
+│   └── message_hash.txt
+│
+├── signatures/
+│   └── signature.sig
+│
+├── output/
+│   └── verification_result.txt
+│
+├── src/
+│   ├── key_generation.py
+│   ├── hash_generator.py
+│   ├── sign_message.py
+│   ├── verify_signature.py
+│   ├── utils.py
+│   └── main.py
+│
+└── docs/
+    ├── Project_Report.pdf
+    └── Project_Flowchart.png
