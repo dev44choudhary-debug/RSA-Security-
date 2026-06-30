@@ -1,0 +1,25 @@
+Start
+   │
+   ▼
+Generate RSA Key Pair
+   │
+   ▼
+Create Message File
+   │
+   ▼
+Generate SHA-256 Hash
+   │
+   ▼
+Sign the Hash using Private Key
+   │
+   ▼
+Store Digital Signature
+   │
+   ▼
+Verify Signature using Public Key
+   │
+   ▼
+Display Result
+   │
+   ▼
+End
